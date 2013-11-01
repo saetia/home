@@ -74,9 +74,8 @@ function reddit(url, element){
 			if (shown++ >= 20) return;
 
 			var d = post['data'];
-			
-			var img = d['thumbnail'] ? 'img' : '';
 			var thumbnail = d['thumbnail'].match(/http/) ? d['thumbnail'] : '';
+			var img = thumbnail ? 'img' : '';
 
 			$('#' + element).append('<li><a class="' + img + '" style="background-image:url(' + thumbnail + ')" title="'+ d['subreddit'] +'" href="' + d['url'] + '">' + d['title'] + ' <small>' + d['subreddit'] + '</small></a></li>');
 
