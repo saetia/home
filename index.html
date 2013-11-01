@@ -76,8 +76,9 @@ function reddit(url, element){
 			var d = post['data'];
 			
 			var img = d['thumbnail'] ? 'img' : '';
+			var thumbnail = d['thumbnail'].match(/http/) ? d['thumbnail'] : '';
 
-			$('#' + element).append('<li><a class="' + img + '" style="background-image:url(' + d['thumbnail'] + ')" title="'+ d['subreddit'] +'" href="' + d['url'] + '">' + d['title'] + ' <small>' + d['subreddit'] + '</small></a></li>');
+			$('#' + element).append('<li><a class="' + img + '" style="background-image:url(' + thumbnail + ')" title="'+ d['subreddit'] +'" href="' + d['url'] + '">' + d['title'] + ' <small>' + d['subreddit'] + '</small></a></li>');
 
 		});
 	});
