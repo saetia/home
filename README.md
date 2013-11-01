@@ -1,6 +1,5 @@
 Simple iGoogle replacement
 ====
-Features:
 * Reddit feeds
 * Google suggest
 * iGoogle "teahouse" theme (all 12 hour-based backgrounds!)
