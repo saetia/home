@@ -72,12 +72,13 @@ function reddit(url, element){
 
 			if (post['data']['over_18']) return;
 			if (shown++ >= 20) return;
-
+			
 			var d = post['data'];
 			var thumbnail = d['thumbnail'].match(/http/) ? d['thumbnail'] : '';
 			var img = thumbnail ? 'img' : '';
+			var style = thumbnail ? 'style="background-image:url(' + thumbnail + ')"' : '';
 
-			$('#' + element).append('<li><a class="' + img + '" style="background-image:url(' + thumbnail + ')" title="'+ d['subreddit'] +'" href="' + d['url'] + '">' + d['title'] + ' <small>' + d['subreddit'] + '</small></a></li>');
+			$('#' + element).append('<li><a class="' + img + '" ' + style + ' title="'+ d['subreddit'] +'" href="' + d['url'] + '">' + d['title'] + ' <small>' + d['subreddit'] + '</small></a></li>');
 
 		});
 	});

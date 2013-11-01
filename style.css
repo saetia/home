@@ -253,7 +253,7 @@ body {font-family:sans-serif;}
 /*#stories li:hover~li a {background-color:rgba(255,255,255,0.9);}
 */
 #stories li a:visited {
-  color:purple;
+  color:rgba(0,0,0,0);
 }
 
 #stories li a.img {
