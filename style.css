@@ -241,12 +241,12 @@ body {font-family:sans-serif;}
 #stories li a {
 	background:white;
 	display:block;
-	padding:5px;
-	color:#444; text-decoration: none;
+	padding:5px 10px;
+	color:#333; text-decoration: none;
 	border-bottom:1px solid #eee;
 }
 
-* {text-rendering: optimizelegibility; font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;}
+* {text-rendering: optimizelegibility; font-family: sans-serif;}
 
 #stories li a {
 	display: -webkit-box;
