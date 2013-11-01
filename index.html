@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Home</title>
+<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/flick/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+
+
+<div style="position:absolute; top:0; left:0; width:100%; z-index:2; padding:10px 0 0;">
+
+	<form method="get" action="http://www.google.com/search" style="padding:0 30px; z-index:5;">
+    <div class="input-group">
+			<input autofocus id="search" type="search" name="q" class="form-control" placeholder="Search Google…">
+			<span class="input-group-btn">
+				<button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+			</span>
+    </div>
+	</form>
+
+
+	<div style="display:table; padding:0 20px; width:100%;" id="stories">
+		<ol id="reddit" style="display:table-cell; width:25%;">
+			<li style="background:rgba(255,255,255,0.5); padding:5px; font-weight:bold;" class="header"><a href="http://reddit.com">Front Page</a></li>
+		</ol>
+
+		<ol id="reddit-programming" style="display:table-cell; width:25%;">
+			<li style="background:rgba(255,255,255,0.5); padding:5px; font-weight:bold;" class="header"><a href="http://www.reddit.com/r/programming+webdev+coding+web_design">Programming / Coding / Web Dev / Web Design</a></li>
+		</ol>
+
+		<ol id="reddit-lang" style="display:table-cell; width:25%;">
+			<li style="background:rgba(255,255,255,0.5); padding:5px; font-weight:bold;" class="header"><a href="http://www.reddit.com/r/ruby+rails+cocoa+ios+nodejs+node+php">Ruby / Rails / Cocoa / iOS / Node / PHP</a></li>
+		</ol>
+
+		<ol id="reddit-news" style="display:table-cell; width:25%;">
+			<li style="background:rgba(255,255,255,0.5); padding:5px; font-weight:bold;" class="header"><a href="http://www.reddit.com/r/inthenews+news+worldnews+milwaukee">News / World News / Milwaukee</a></li>
+		</ol>
+	
+	</div>
+
+</div>
+
+<div class="main_container">
+	<div class="canvas_tile"></div>
+	<div class="header_tile"></div>
+	<div class="header_bg"></div>
+	<div class="footertile_bg"></div>
+	<div class="footer_bg"></div>
+	<div class="sun_tile"></div>
+</div>
+
+<script>
+var body = document.getElementsByTagName('body')[0];
+var set = new Date().getHours() & ~1;
+body.className += "time-" + set;
+</script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+<script>
+function reddit(url, element){
+	$.ajax(url, {
+		dataType: 'jsonp',
+	}).done(function(data){
+		var shown = 0;
+		$.each(data['data']['children'], function(i, post){
+
+			if (post['data']['over_18']) return;
+			if (shown++ >= 20) return;
+
+			var d = post['data'];
+			
+			var img = d['thumbnail'] ? 'img' : '';
+
+			$('#' + element).append('<li><a class="' + img + '" style="background-image:url(' + d['thumbnail'] + ')" title="'+ d['subreddit'] +'" href="' + d['url'] + '">' + d['title'] + ' <small>' + d['subreddit'] + '</small></a></li>');
+
+		});
+	});
+}
+
+reddit('http://www.reddit.com/r/programming+webdev+coding+web_design/.json?limit=20&jsonp=?', 'reddit-programming');
+
+reddit('http://www.reddit.com/r/ruby+rails+cocoa+ios+nodejs+node+php/.json?limit=20&jsonp=?', 'reddit-lang');
+
+//http://json2jsonp.com
+
+reddit('http://jsonp.jit.su/?url=' + encodeURIComponent('http://www.reddit.com/.json?feed=01e577eed35363193815e3d919d0449f2a92ea70&user=glovacki&limit=25') + '&callback=?', 'reddit');
+
+reddit('http://www.reddit.com/r/inthenews+news+worldnews+milwaukee/.json?limit=20&jsonp=?', 'reddit-news');
+
+var suggestCallBack;
+
+$(document).ready(function() {
+    $("#search").autocomplete({
+
+          select: function(){
+
+            	$('form').submit();
+
+            },
+
+        source: function(request, response){
+            $.getJSON("http://suggestqueries.google.com/complete/search?callback=?",{ 
+                  "hl":"en",                
+                  "jsonp":"suggestCallBack",
+                  "q":request.term,
+                  "client":"youtube"
+                }
+            );
+            suggestCallBack = function (data) {
+                var suggestions = [];
+                $.each(data[1], function(key, val) {
+                    suggestions.push({"value":val[0]});
+                });
+                suggestions.length = 10; // prune suggestions list to only 5 items
+                response(suggestions);
+            };
+        },
+    });
+});
+
+
+</script>
+
+</body>
+</html>
