@@ -1,8 +1,5 @@
-home
-====
-
 Simple iGoogle replacement
-
+====
 Features:
 * Reddit feeds
 * Google suggest
