@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Home</title>
-<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/flick/jquery-ui.css">
-<link rel="stylesheet" type="text/css" href="style.css">
+	<title>Home</title>
+	<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/flick/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-
-
 
 <div style="position:absolute; top:0; left:0; width:100%; z-index:2; padding:10px 0 0;">
 
@@ -21,7 +19,6 @@
 			</span>
     </div>
 	</form>
-
 
 	<div style="display:table; padding:0 20px; width:100%;" id="stories">
 		<ol id="reddit" style="display:table-cell; width:25%;">
@@ -54,9 +51,9 @@
 </div>
 
 <script>
-var body = document.getElementsByTagName('body')[0];
-var set = new Date().getHours() & ~1;
-body.className += "time-" + set;
+	var body = document.getElementsByTagName('body')[0];
+	var set = new Date().getHours() & ~1;
+	body.className += "time-" + set;
 </script>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -72,11 +69,11 @@ function reddit(url, element){
 
 			if (post['data']['over_18']) return;
 			if (shown++ >= 20) return;
-			
-			var d = post['data'];
-			var thumbnail = d['thumbnail'].match(/http/) ? d['thumbnail'] : '';
-			var img = thumbnail ? 'img' : '';
-			var style = thumbnail ? 'style="background-image:url(' + thumbnail + ')"' : '';
+
+			var d = post['data'],
+					thumbnail = d['thumbnail'].match(/http/) ? d['thumbnail'] : '',
+					img = thumbnail ? 'img' : '',
+					style = thumbnail ? 'style="background-image:url(' + thumbnail + ')"' : '';
 
 			$('#' + element).append('<li><a class="' + img + '" ' + style + ' title="'+ d['subreddit'] +'" href="' + d['url'] + '">' + d['title'] + ' <small>' + d['subreddit'] + '</small></a></li>');
 
@@ -97,32 +94,25 @@ reddit('http://www.reddit.com/r/inthenews+news+worldnews+milwaukee/.json?limit=2
 var suggestCallBack;
 
 $(document).ready(function() {
-    $("#search").autocomplete({
-
-          select: function(){
-
-            	$('form').submit();
-
-            },
-
-        source: function(request, response){
-            $.getJSON("http://suggestqueries.google.com/complete/search?callback=?",{ 
-                  "hl":"en",                
-                  "jsonp":"suggestCallBack",
-                  "q":request.term,
-                  "client":"youtube"
-                }
-            );
-            suggestCallBack = function (data) {
-                var suggestions = [];
-                $.each(data[1], function(key, val) {
-                    suggestions.push({"value":val[0]});
-                });
-                suggestions.length = 10; // prune suggestions list to only 5 items
-                response(suggestions);
-            };
-        },
-    });
+	$("#search").autocomplete({
+		select: function(){ $('form').submit(); },
+		source: function(request, response){
+			$.getJSON("http://suggestqueries.google.com/complete/search?callback=?", { 
+				"hl": "en",                
+				"jsonp": "suggestCallBack",
+				"q":request.term,
+				"client":"youtube"
+			});
+			suggestCallBack = function(data){
+				var suggestions = [];
+				$.each(data[1], function(key, val) {
+					suggestions.push({"value":val[0]});
+				});
+				suggestions.length = 10; // prune suggestions list to only 5 items
+				response(suggestions);
+			};
+		},
+	});
 });
 
 
