@@ -5,4 +5,4 @@ Simple iGoogle replacement
 * iGoogle "teahouse" theme (all 12 hour-based backgrounds!)
 
 
-![http://i.imgur.com/OKw8yVI.jpg](http://i.imgur.com/OKw8yVI.jpg)
+![http://i.imgur.com/Z0k42un.jpg](http://i.imgur.com/Z0k42un.jpg)
