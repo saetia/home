@@ -75,7 +75,7 @@ function reddit(url, element){
 					img = thumbnail ? 'img' : '',
 					style = thumbnail ? 'style="background-image:url(' + thumbnail + ')"' : '';
 
-			$('#' + element).append('<li><a class="' + img + '" ' + style + ' title="'+ d['subreddit'] +'" href="' + d['url'] + '">' + d['title'] + ' <small>' + d['subreddit'] + '</small></a></li>');
+			$('#' + element).append('<li><a class="' + img + '" ' + style + ' title="' + d['title'] + ' – '+ d['subreddit'] +'" href="' + d['url'] + '">' + d['title'] + ' <small>' + d['subreddit'] + '</small></a></li>');
 
 		});
 	});
