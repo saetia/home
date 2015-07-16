@@ -2,17 +2,16 @@
 <html>
 <head>
 	<title>Home</title>
-	<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.11.1/themes/flick/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.11.4/themes/flick/jquery-ui.css">
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<meta charset="utf-8">
 </head>
 <body>
 
-<div style="position:absolute; top:0; left:0; width:100%; z-index:2; padding:10px 0 0;">
-
-	<form method="get" action="http://www.google.com/search" style="padding:0 30px; z-index:5;">
+<div id="wrapper">
+	<form method="get" action="http://www.google.com/search">
     <div class="input-group">
 			<input autofocus id="search" type="search" name="q" class="form-control" placeholder="Search Google…">
 			<span class="input-group-btn">
@@ -21,25 +20,20 @@
     </div>
 	</form>
 
-	<div style="display:table; padding:0 20px; width:100%;" id="stories">
-		<ol id="reddit" style="display:table-cell; width:25%;">
-			<li style="background:rgba(255,255,255,0.5); padding:5px; font-weight:bold;" class="header"><a href="http://reddit.com">Front Page</a></li>
+	<div id="stories">
+		<ol id="reddit">
+			<li class="header"><a href="http://reddit.com">Front Page</a></li>
 		</ol>
-
-		<ol id="reddit-programming" style="display:table-cell; width:25%;">
-			<li style="background:rgba(255,255,255,0.5); padding:5px; font-weight:bold;" class="header"><a href="http://www.reddit.com/r/programming+webdev+coding+web_design">Programming / Coding / Web Dev / Web Design</a></li>
+		<ol id="reddit-programming">
+			<li class="header"><a href="http://www.reddit.com/r/programming+webdev+coding+web_design">Development</a></li>
 		</ol>
-
-		<ol id="reddit-lang" style="display:table-cell; width:25%;">
-			<li style="background:rgba(255,255,255,0.5); padding:5px; font-weight:bold;" class="header"><a href="http://www.reddit.com/r/ruby+rails+cocoa+ios+nodejs+node+php">Ruby / Rails / Cocoa / iOS / Node / PHP</a></li>
+		<ol id="reddit-lang">
+			<li class="header"><a href="http://www.reddit.com/r/ruby+rails+cocoa+ios+node+php">Code</a></li>
 		</ol>
-
-		<ol id="reddit-news" style="display:table-cell; width:25%;">
-			<li style="background:rgba(255,255,255,0.5); padding:5px; font-weight:bold;" class="header"><a href="http://www.reddit.com/r/inthenews+news+worldnews+milwaukee">News / World News / Milwaukee</a></li>
+		<ol id="reddit-news">
+			<li class="header"><a href="http://www.reddit.com/r/inthenews+news+worldnews+milwaukee">News</a></li>
 		</ol>
-	
 	</div>
-
 </div>
 
 <div class="main_container">
@@ -57,8 +51,8 @@
 	body.className += "time-" + set;
 </script>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
 
 <script>
 function reddit(url, element){
@@ -66,6 +60,7 @@ function reddit(url, element){
 		dataType: 'jsonp',
 	}).done(function(data){
 		var shown = 0;
+		var li_array = [];
 		$.each(data['data']['children'], function(i, post){
 
 			if (post['data']['over_18']) return;
@@ -76,9 +71,14 @@ function reddit(url, element){
 					img = thumbnail ? 'img' : '',
 					style = thumbnail ? 'style="background-image:url(' + thumbnail + ')"' : '';
 
-			$('#' + element).append('<li><a class="' + img + '" ' + style + ' title="' + d['title'].replace(/"/g, '&quot;') + ' – '+ d['subreddit'] +'" href="' + d['url'] + '">' + d['title'] + ' <small>' + d['subreddit'] + '</small></a></li>');
+			var $li = $('<li><a data-comment-url="http://www.reddit.com' + d['permalink'] + '" class="' + img + '" ' + style + ' title="' + d['title'].replace(/"/g, '&quot;') + ' – '+ d['subreddit'] +'" href="' + d['url'] + '">' + d['title'] + ' <small>' + d['subreddit'] + '</small></a></li>'); 
+
+			li_array.push($li);
 
 		});
+
+		$('#' + element).append(li_array);
+
 	});
 }
 
@@ -95,19 +95,28 @@ reddit('http://www.reddit.com/r/inthenews+news+worldnews+milwaukee/.json?limit=2
 var suggestCallBack;
 
 $(document).ready(function() {
+
+	$('#stories').on('click','a', function(e){
+		if (!e.shiftKey) return true;
+		e.preventDefault();
+		var comment_url = $(this).data('comment-url');
+		window.location.href = comment_url;
+		return;
+	});
+
 	$("#search").autocomplete({
 		select: function(){ $('form').submit(); },
 		source: function(request, response){
-			$.getJSON("http://suggestqueries.google.com/complete/search?callback=?", { 
-				"hl": "en",                
-				"jsonp": "suggestCallBack",
-				"q":request.term,
-				"client":"youtube"
+			$.getJSON("http://suggestqueries.google.com/complete/search?callback=?", {
+				"hl": 		"en",                
+				"jsonp": 	"suggestCallBack",
+				"q": 			request.term,
+				"client": "youtube"
 			});
 			suggestCallBack = function(data){
 				var suggestions = [];
 				$.each(data[1], function(key, val) {
-					suggestions.push({"value":val[0]});
+					suggestions.push({"value": val[0]});
 				});
 				suggestions.length = 10; // prune suggestions list to only 5 items
 				response(suggestions);
@@ -115,9 +124,6 @@ $(document).ready(function() {
 		},
 	});
 });
-
-
 </script>
-
 </body>
 </html>

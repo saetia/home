@@ -1,12 +1,23 @@
+* {box-sizing:border-box; text-rendering: optimizelegibility; font-family: sans-serif;}
+
 .main_container {
   min-height: 100%;
   position: relative;
 }
+
 body {
   margin: 0; height: 100%; width: 100%;
 }
 
 #search {font-weight:bold; color:#333; background:rgba(255,255,255,0); border:1px solid rgba(255,255,255,0.2);}
+
+form {
+  padding:0 30px; z-index:5;
+}
+
+#wrapper {
+  position:absolute; top:0; left:0; width:100%; z-index:2; padding:10px 0 0;
+}
 
 .canvas_tile,
 .sun_tile,
@@ -237,7 +248,17 @@ body {
 .time-22 #search {color:white;}
 
 body {font-family:sans-serif;}
-#stories ol {list-style:none; padding:10px; margin:0; overflow:hidden;}
+
+
+#stories {
+  display:table; table-layout:fixed; padding:0 20px; width:100%;
+}
+#stories ol {list-style:none; padding:10px; margin:0; overflow:hidden; display:table-cell; width:25%;}
+
+#stories ol li.header {
+  background:rgba(255,255,255,0.5); padding:5px; font-weight:bold;
+}
+
 #stories li a {
 	background:white;
 	display:block;
@@ -245,8 +266,6 @@ body {font-family:sans-serif;}
 	color:#333; text-decoration: none;
 	border-bottom:1px solid #eee;
 }
-
-* {text-rendering: optimizelegibility; font-family: sans-serif;}
 
 #stories li a {
 	display: -webkit-box;
