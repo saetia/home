@@ -2,9 +2,9 @@
 <html>
 <head>
 	<title>Home</title>
-	<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.11.4/themes/flick/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<meta charset="utf-8">
 </head>
@@ -51,8 +51,8 @@
 	body.className += "time-" + set;
 </script>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="   crossorigin="anonymous"></script>
 
 <script>
 function reddit(url, element){
@@ -88,7 +88,7 @@ reddit('http://www.reddit.com/r/ruby+rails+cocoa+ios+node+php/.json?limit=20&jso
 
 //http://json2jsonp.com
 
-reddit('http://jsonp.jit.su/?url=' + encodeURIComponent('http://www.reddit.com/.json?feed=01e577eed35363193815e3d919d0449f2a92ea70&user=glovacki&limit=25') + '&callback=?', 'reddit');
+reddit('https://jsonp.afeld.me/?url=' + encodeURIComponent('http://www.reddit.com/.json?feed=01e577eed35363193815e3d919d0449f2a92ea70&user=glovacki&limit=25') + '&callback=?', 'reddit');
 
 reddit('http://www.reddit.com/r/inthenews+news+worldnews+milwaukee/.json?limit=20&jsonp=?', 'reddit-news');
 
@@ -118,7 +118,7 @@ $(document).ready(function() {
 				$.each(data[1], function(key, val) {
 					suggestions.push({"value": val[0]});
 				});
-				suggestions.length = 10; // prune suggestions list to only 5 items
+				suggestions.length = 10;
 				response(suggestions);
 			};
 		},
